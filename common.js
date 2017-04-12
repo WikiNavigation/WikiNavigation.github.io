@@ -20,12 +20,14 @@ d3.json("dataSet.json", function(error, graph) {
         .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
 
 
+
+
     var node = svg.append("g")
         .attr("class", "nodes")
         .selectAll("circle")
         .data(graph.nodes)
         .enter().append("circle")
-        .attr("r", 10)
+        .attr("r", 6)
 
     .attr("fill", function(d) { return color(d.group); })
         .call(d3.drag()
