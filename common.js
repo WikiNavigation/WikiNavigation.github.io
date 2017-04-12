@@ -9,7 +9,7 @@ var simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2));
 
-d3.json("dataSet2.json", function(error, graph) {
+d3.json("dataSet.json", function(error, graph) {
     if (error) throw error;
 
     var link = svg.append("g")
@@ -26,12 +26,20 @@ d3.json("dataSet2.json", function(error, graph) {
         .data(graph.nodes)
         .enter().append("circle")
         .attr("r", 10)
-        .attr("onmouseover", function(d) { return "pull('" + d.id + "'," + d.node + ")" })
-        .attr("fill", function(d) { return color(d.group); })
+
+    .attr("fill", function(d) { return color(d.group); })
         .call(d3.drag()
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended));
+
+    var tip = svg.append("text")
+        .attr("class", "tooltip")
+        .attr("id", "tooltip")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("visibility", "hidden")
+        .text("Tooltip")
 
     node.append("title")
         .text(function(d) { return d.id; });
@@ -52,8 +60,13 @@ d3.json("dataSet2.json", function(error, graph) {
 
         node
             .attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; });
+            .attr("cy", function(d) { return d.y; })
+            .attr("onclick", function(d) { return "details('" + d.id + "'," + d.node + ")" })
+            .attr("onmouseover", function(d) { return "pull(" + d.x + "," + d.y + ",'" + d.id + "'," + d.node + ")" })
+            .attr("onmouseout", "hide()");
     }
+
+
 });
 
 function dragstarted(d) {
@@ -73,7 +86,26 @@ function dragended(d) {
     d.fy = null;
 }
 
-function pull(name, group) {
+function pull(x, y, name, group) {
+    var tip = svg.select("text")
+        .attr("x", x + 5)
+        .attr("y", y)
+        .attr("visibility", "show")
+        .text(name)
+        .append("tspan")
+        .attr("x", x + 5)
+        .attr("y", y + 25)
+        .text("Node:" + group);
+
+
+}
+
+function hide() {
+    var tip = svg.select("text")
+        .attr("visibility", "hidden");
+}
+
+function details(name, group) {
     var form = document.getElementById("info");
     form.innerHTML = "<h2 class='info-header'>" + name + "</h2>";
     form.innerHTML += "<h3>Node:" + group + "</h3>";

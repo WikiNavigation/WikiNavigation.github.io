@@ -65,3 +65,9 @@
     stroke: black;
     stroke-width: 4;
 }
+
+#tooltip {
+    fill: #999999;
+    stroke: #000000;
+    font-size: 25px;
+}

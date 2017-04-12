@@ -9,9 +9,9 @@ import csv
 import json 
 
 wikipedia.search("Barack")
-state = wikipedia.page("apple")
+state = wikipedia.page("The")
 VERSION = "DS_1.0.1"
-floor  = 70
+floor  = 50
 title = []
 double = []
 route = []
@@ -19,6 +19,34 @@ link = []
 total = 0
 
 print('Title~Route~Link.csv')
+
+arrayofkeywords = ['YouTube','Barack Obama','United States','FaceBook','Twitter','Adolf Hitler','Sex','Megan Fox','Japan','Canada'] 
+#(ranked from 1(lowest priority) end (heigest priority))
+
+
+def makeChoice():
+    testLink = []
+    ratings = []
+    for i in range(0,len(state.links)):
+        currentlink = state.links[i]
+        rating = 0
+        for i in range(0,len(arrayofkeywords)):
+            if arrayofkeywords[1] in currentlink:
+                rating += 1
+				
+        testLink.append(currentlink)
+        ratings.append(rating)
+		
+    currmax = 0
+    linkIndex = 0
+    for i in range (0,len(testLink)):
+        if (ratings[i]>currmax):
+            currmax=ratings[i]
+            linkIndex=i
+    if(linkIndex == 0):
+        linkIndex = randint(0,len(state.links))
+			
+    return linkIndex
 
 def dupe(string):
     count = 0
@@ -29,7 +57,7 @@ def dupe(string):
     return False
 
 for i in range (0,floor):
-    choice = randint(2,10)
+    choice = makeChoice()
     state = wikipedia.page(state.links[choice])
     route.append(choice)
     title.append(state.title)
@@ -63,7 +91,7 @@ for i in range (1,floor):
 #     links.append({'source':title[alt],'target':title[Modifier],'value':route[i]}) 
 
 box.append({'nodes':nodes,'links':links})
-with open('data.json', 'w') as outfile:
+with open('dataSet.json', 'w') as outfile:
   json.dump(box, outfile)
 
 print(json.dumps(box))
