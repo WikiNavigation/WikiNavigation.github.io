@@ -11,9 +11,10 @@ import json
 arrayofkeywords = ['local','Apple','YouTube','latin','United States','FaceBook','Twitter','Adolf Hitler','Sex','Megan Fox','Japan','Canada','war','Scandal','address','Speech','Power'] 
 state = wikipedia.page("The")
 VERSION = "DS_1.0.1"
-floor  = 50
+floor  = 75
 title = []
 double = []
+summ = []
 route = []
 link = []
 clusters = []
@@ -25,12 +26,6 @@ print('Title~Route~Link.csv')
 #(ranked from 1(lowest priority) end (heigest priority))
 
 
-def converge():
-    for i in range(0,len(state.links)):
-        for x in range(0,len(title)):
-            if state.links[i] in title[x]:
-                clusters.append(state.links[i])
-    return 0
 
 def makeChoice():
     testLink = []
@@ -67,9 +62,9 @@ def dupe(string):
 for i in range (0,floor):
     choice = makeChoice()
     state = wikipedia.page(state.links[choice])
-    converge()
     route.append(choice)
     title.append(state.title)
+    summ.append(state.summary)
     link.append(len(state.links))
     total += route[i];
 print("Total: "+str(total))
@@ -85,19 +80,23 @@ alt = 0;
 
 for i in range (0,floor):
     if dupe(title[i]) ==  False:
-        nodes.append({'id':title[i],'node': i,'group':route[i]})
+        nodes.append({'id':title[i],'node': i,'group':route[i],'sum':summ[i]})
 
 
 for i in range (1,floor):
-    links.append({'source':title[i-1],'target':title[i],'value':route[i]}) 
+    links.append({'source':title[i-1],'target':title[i],'value':route[i]})
 
-for i in range (1,len(clusters)-1):
-    blanks.append({'id':clusters[i-1]}) 
+for i in range (1,floor):
+    Modifier = randint(0,len(title)-1)
+    alt = randint(0,len(title)-1)
+    links.append({'source':title[alt],'target':title[Modifier],'value':route[i]}) 
 
 
 
 
-box.append({'nodes':nodes,'links':links,'Clusters':blanks})
+
+
+box.append({'nodes':nodes,'links':links})
 with open('dataSet.json', 'w') as outfile:
   json.dump(box, outfile)
 

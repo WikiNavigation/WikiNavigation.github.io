@@ -63,7 +63,7 @@ d3.json("dataSet.json", function(error, graph) {
         node
             .attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; })
-            .attr("onclick", function(d) { return "details('" + d.id + "'," + d.node + ")" })
+            .attr("onclick", function(d) { return "details('" + d.id + "'," + d.sum + ")" })
             .attr("onmouseover", function(d) { return "pull(" + d.x + "," + d.y + ",'" + d.id + "'," + d.node + ")" })
             .attr("onmouseout", "hide()");
     }
@@ -110,5 +110,6 @@ function hide() {
 function details(name, group) {
     var form = document.getElementById("info");
     form.innerHTML = "<h2 class='info-header'>" + name + "</h2>";
-    form.innerHTML += "<h3>Node:" + group + "</h3>";
+
+    form.innerHTML += "<div><p>" + group + "<p></div>";
 }
