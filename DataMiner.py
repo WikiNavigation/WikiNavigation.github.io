@@ -8,9 +8,7 @@ from random import randint
 import csv
 import json 
 
-arrayofkeywords = ['YouTube','Barack Obama','United States','FaceBook','Twitter','Adolf Hitler','Sex','Megan Fox','Japan','Canada','war','Scandal','address','Speech','Power'] 
-wikipedia.search("Barack")
-# state = wikipedia.page(arrayofkeywords[randint(0,len(arrayofkeywords))])
+arrayofkeywords = ['local','Apple','YouTube','latin','United States','FaceBook','Twitter','Adolf Hitler','Sex','Megan Fox','Japan','Canada','war','Scandal','address','Speech','Power'] 
 state = wikipedia.page("The")
 VERSION = "DS_1.0.1"
 floor  = 50
